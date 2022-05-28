@@ -13,6 +13,8 @@ Fin
 
 let word = "";
 let text = "";
+let increment = false;
+let delay = 5;
 const NombreBords = () => {
   let total = 0;
   let tempStart = "";
@@ -55,10 +57,16 @@ const cleanRow = () => {
   }
 };
 //Retourne un tableau de position des occurences
-async function morrisPratt() {
+
+const morrisPratt = async () => {
   //construction tableau de bords
   cleanRow();
   let tableauOccurences = [];
+  delay =
+    document.getElementById("delay").value === ""
+      ? 5
+      : document.getElementById("delay").value;
+
   console.log("Lancement du Morris Pratt");
   const tableauBords = CalculBords(word);
   console.log("Tableau de bords:", tableauBords);
@@ -79,6 +87,9 @@ async function morrisPratt() {
       textIndex += 1;
       if (wordIndex === wordLength) {
         tableauOccurences[numberPositions] = textIndex - wordIndex;
+        document.getElementById("totalMatchs").innerHTML =
+          tableauOccurences.length;
+
         for (let i = 0; i < word.length; i++) {
           document.getElementById(
             (textIndex - wordIndex + i).toString()
@@ -100,9 +111,10 @@ async function morrisPratt() {
         textIndex += 1;
       }
     }
-    document.getElementById("time").innerHTML = Date.now() - start;
 
-    await sleep(10);
+    document.getElementById("time").innerHTML = Date.now() - start;
+    increment ? await keyPressed() : null;
+    delay > 0 ? await sleep(delay) : null;
   }
 
   var end = Date.now();
@@ -112,7 +124,7 @@ async function morrisPratt() {
   document.getElementById("totalMatchs").innerHTML = tableauOccurences.length;
 
   return tableauOccurences;
-}
+};
 
 async function brutForce() {
   //.style.backgroundColor = "white";
@@ -137,7 +149,7 @@ async function brutForce() {
       break;
     }
 
-    await sleep(200);
+    await sleep(delay);
   }
   var end = Date.now();
   console.log("Temps d'éxécution:", end - start, "ms");
@@ -146,8 +158,14 @@ async function brutForce() {
 
   return tableauOccurences;
 }
+
 const realBrutForce = async () => {
   if (word.length <= 0 || text.length <= 0) return 0;
+  delay =
+    document.getElementById("delay").value === ""
+      ? 5
+      : document.getElementById("delay").value;
+  console.log(delay, "hzhzhz", document.getElementById("delay").value);
   cleanRow();
 
   const wordLength = word.length;
@@ -170,15 +188,20 @@ const realBrutForce = async () => {
     }
     if (wordIndex === wordLength) {
       tableauOccurences.push(i);
+      document.getElementById("totalMatchs").innerHTML =
+        tableauOccurences.length;
 
       wordIndex = 0;
     }
     wordIndex = 0;
     i++;
-    await sleep(10);
+    delay > 0 ? await sleep(delay) : null;
+
+    increment ? await keyPressed() : null;
+
     document.getElementById("time").innerHTML = Date.now() - start;
   }
-  for (let z = 0; z < tableauOccurences.length - 1; z++) {
+  for (let z = 0; z < tableauOccurences.length; z++) {
     for (let iz = 0; iz < word.length; iz++) {
       document.getElementById(
         (tableauOccurences[z] + iz).toString()
@@ -217,16 +240,28 @@ function addCode() {
     document.getElementById("row").innerHTML += `<td id=${i}>${text[i]}</td>`;
   }
 }
+const keyPressed = () => {
+  return new Promise((resolve) => {
+    document.addEventListener("keydown", function (event) {
+      const key = event.key;
+      switch (key) {
+        case "ArrowRight":
+          resolve();
+      }
+    });
+  });
+};
 window.onload = function () {
+  document.getElementById("increment").innerHTML =
+    "Mode pas a pas desactivé, appuyez sur Enter pour l'activé";
   document.body.addEventListener("keydown", function (event) {
     const key = event.key;
     switch (key) {
-      case "ArrowLeft":
-        str = "Left";
-        break;
-      case "ArrowRight":
-        str = "Right";
-        console.log("right");
+      case "Enter":
+        increment = !increment;
+        document.getElementById("increment").innerHTML = increment
+          ? "Mode pas à pas activé, appuyez sur Entrée pour le désactiver"
+          : "Mode pas a pas desactivé, appuyez sur Entréé pour l'activé";
         break;
     }
   });
