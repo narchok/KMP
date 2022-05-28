@@ -6,19 +6,6 @@
         border: solid;
         margin: 1px;
       }
-      .input {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        float: right;
-        padding: 0.8em;
-        line-height: 1rem;
-        width: 60%;
-        border: none;
-        border-radius: 0;
-        background: transparent;
-        font-weight: 400;
-      }
       .navbar {
         overflow: hidden;
         background-color: #0c46a4;
@@ -28,7 +15,7 @@
         justify-content: space-between;
       }
       .container {
-        margin: 0 1rem 1rem 1rem;
+        margin: 1rem 1rem 1rem 1rem;
       }
 
       /* CSS */
@@ -72,10 +59,7 @@
       html {
         font-family: Helvetica, Sans-Serif;
       }
-      .inputs {
-        display: flex;
-        justify-content: center;
-      }
+
       .main {
         display: flex;
         justify-content: center;
@@ -93,8 +77,22 @@
   </div>
 
   <div id="root" class="container">
-    <div>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr)">
+    <div
+      style="
+        display: flex;
+        justify-content: space-around;
+        justify-items: center;
+        color: white;
+      "
+    >
+      <div
+        style="
+          background: #0c46a4;
+          border-radius: 1rem;
+          padding: 0 1rem;
+          display: flex;
+        "
+      >
         <div style="display: flex; place-content: end; margin-right: 0.5rem">
           <p>Temps:</p>
         </div>
@@ -103,7 +101,14 @@
           ms
         </div>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr)">
+      <div
+        style="
+          background: #0c46a4;
+          border-radius: 1rem;
+          padding: 0 1rem;
+          display: flex;
+        "
+      >
         <div style="display: flex; place-content: end; margin-right: 0.5rem">
           <p>Texte:</p>
         </div>
@@ -112,7 +117,14 @@
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr)">
+      <div
+        style="
+          background: #0c46a4;
+          border-radius: 1rem;
+          padding: 0 1rem;
+          display: flex;
+        "
+      >
         <div style="display: flex; place-content: end; margin-right: 0.5rem">
           <p>Pattern:</p>
         </div>

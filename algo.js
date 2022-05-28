@@ -11,7 +11,6 @@ Fin
 
 */
 
-//const fs = require("fs");
 let word = "";
 let text = "";
 const NombreBords = () => {
@@ -49,6 +48,8 @@ const CalculBords = (mot) => {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const cleanRow = () => {
   let td = document.getElementsByTagName("td");
+  document.getElementById("time").innerHTML = "";
+  document.getElementById("totalMatchs").innerHTML = "";
   for (let i = 0; i < td.length; i++) {
     td[i].style.backgroundColor = "white";
   }
@@ -68,31 +69,12 @@ async function morrisPratt() {
   let wordIndex = 0;
   var start = Date.now();
 
-  /* while (textIndex < text.length) {
-    if (word[wordIndex] === text[textIndex]) {
-      wordIndex += 1;
-      textIndex += 1;
-    }
-    if (wordIndex === word.length) {
-      //console.log("Occurence en position,", textIndex - wordIndex);
-      tableauOccurences.push(textIndex - wordIndex);
-      wordIndex = tableauBords[wordIndex];
-    } else if (textIndex < text.length && word[wordIndex] != text[textIndex]) {
-      if (wordIndex != 0) {
-        wordIndex = tableauBords[wordIndex];
-      } else {
-        textIndex += 1;
-      }
-    }
-  } */
-
-  console.log("hello");
   let numberPositions = 0;
   const wordLength = word.length;
   while (textIndex < text.length) {
     if (word[wordIndex] === text[textIndex]) {
       document.getElementById(textIndex.toString()).style.backgroundColor =
-        "green";
+        "#ACD1AF";
       wordIndex += 1;
       textIndex += 1;
       if (wordIndex === wordLength) {
@@ -100,18 +82,18 @@ async function morrisPratt() {
         for (let i = 0; i < word.length; i++) {
           document.getElementById(
             (textIndex - wordIndex + i).toString()
-          ).style.backgroundColor = "green";
+          ).style.backgroundColor = "#ACD1AF";
         }
         numberPositions += 1;
         wordIndex = tableauBords[wordIndex];
       } else {
         document.getElementById(
           (textIndex - 1).toString()
-        ).style.backgroundColor = "yellow";
+        ).style.backgroundColor = "#f4f186";
       }
     } else {
       document.getElementById(textIndex.toString()).style.backgroundColor =
-        "yellow";
+        "#f4f186";
       wordIndex = tableauBords[wordIndex];
       if (wordIndex < 0) {
         wordIndex += 1;
@@ -122,17 +104,6 @@ async function morrisPratt() {
 
     await sleep(10);
   }
-  /*  while (textIndex < text.length) {
-    if (wordIndex >= 0 && word[wordIndex] != text[textIndex]) {
-      wordIndex = tableauBords[wordIndex];
-    } else {
-      wordIndex += 1;
-      textIndex += 1;
-    }
-    if (wordIndex === wordLength) {
-      tableauOccurences.push(textIndex - wordLength);
-    }
-  } */
 
   var end = Date.now();
   console.log("Temps d'éxécution:", end - start, "ms");
@@ -152,13 +123,13 @@ async function brutForce() {
   tableauOccurences = new Array();
   var pos = 0;
   while (true) {
-    document.getElementById(pos.toString()).style.backgroundColor = "yellow";
+    document.getElementById(pos.toString()).style.backgroundColor = "#f4f186";
     pos = text.indexOf(word, pos);
 
     if (pos >= 0) {
       for (let i = 0; i < word.length; i++) {
         document.getElementById((pos + i).toString()).style.backgroundColor =
-          "green";
+          "#ACD1AF";
       }
       tableauOccurences.push(pos);
       pos += 1;
@@ -190,17 +161,16 @@ const realBrutForce = async () => {
     for (let j = 0; j < wordLength; j++) {
       i + j < text.length
         ? (document.getElementById((i + j).toString()).style.backgroundColor =
-            "grey")
+            "#f4f186")
         : null;
 
       if (word[wordIndex] === text[i + j]) {
-        document.getElementById((i + j).toString()).style.backgroundColor =
-          "green";
         wordIndex += 1;
       }
     }
     if (wordIndex === wordLength) {
       tableauOccurences.push(i);
+
       wordIndex = 0;
     }
     wordIndex = 0;
@@ -212,7 +182,7 @@ const realBrutForce = async () => {
     for (let iz = 0; iz < word.length; iz++) {
       document.getElementById(
         (tableauOccurences[z] + iz).toString()
-      ).style.backgroundColor = "forestgreen";
+      ).style.backgroundColor = "#ACD1AF";
     }
   }
   /*  while (i <= text.length) {
@@ -230,13 +200,6 @@ const realBrutForce = async () => {
   return tableauOccurences;
 };
 
-//const text = fs.readFileSync("./sequence.fasta", "utf8");
-const mot2 = "ATA";
-
-//brutForce(text, mot2);
-console.log("----------");
-//morrisPratt(text, mot2);
-
 function addCode() {
   const test = document.getElementById("row");
   test ? test.remove() : null;
@@ -244,13 +207,13 @@ function addCode() {
     document.getElementById("text").value === ""
       ? "ATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAAATAATATABDATTATKATATHAJTAA"
       : document.getElementById("text").value;
-  console.log("text", text === "");
   word =
     document.getElementById("pattern").value === ""
       ? "ATA"
       : document.getElementById("pattern").value;
+  document.getElementById("body").innerHTML += `<tr id="row"></tr>`;
+
   for (let i = 0; i < text.length; i++) {
-    document.getElementById("body").innerHTML += `<tr id="row"></tr>`;
     document.getElementById("row").innerHTML += `<td id=${i}>${text[i]}</td>`;
   }
 }
