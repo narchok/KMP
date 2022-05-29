@@ -19,7 +19,6 @@ const NombreBords = () => {
   let total = 0;
   let tempStart = "";
   let tempEnd = "";
-  console.log("Lancement du Brut Force...");
   for (let i = 0; i < mot.length - 1; i++) {
     tempStart = mot.slice(0, i);
     tempEnd = mot.slice(mot.length - i, mot.length);
@@ -31,7 +30,7 @@ const NombreBords = () => {
 
   console.log("Nombre de bords:", total);
 };
-const CalculBords = (mot) => {
+const CalculBords = async (mot) => {
   let i = 0;
   let j = 1;
   let tableauBords = [mot.length + 1];
@@ -68,7 +67,7 @@ const morrisPratt = async () => {
       : document.getElementById("delay").value;
 
   console.log("Lancement du Morris Pratt");
-  const tableauBords = CalculBords(word);
+  const tableauBords = await CalculBords(word);
   console.log("Tableau de bords:", tableauBords);
 
   //Algo Morris Pratt
@@ -80,11 +79,15 @@ const morrisPratt = async () => {
   let numberPositions = 0;
   const wordLength = word.length;
   while (textIndex < text.length) {
+    document.getElementById(textIndex.toString()).style.backgroundColor =
+      "#f4f186";
+    document.getElementById(textIndex.toString()).style.borderColor = "red";
+    delay > 0 ? await sleep(delay) : null;
+
     if (word[wordIndex] === text[textIndex]) {
-      document.getElementById(textIndex.toString()).style.backgroundColor =
-        "#ACD1AF";
       wordIndex += 1;
       textIndex += 1;
+
       if (wordIndex === wordLength) {
         tableauOccurences[numberPositions] = textIndex - wordIndex;
         document.getElementById("totalMatchs").innerHTML =
@@ -95,26 +98,33 @@ const morrisPratt = async () => {
             (textIndex - wordIndex + i).toString()
           ).style.backgroundColor = "#ACD1AF";
         }
+
         numberPositions += 1;
         wordIndex = tableauBords[wordIndex];
-      } else {
-        document.getElementById(
-          (textIndex - 1).toString()
-        ).style.backgroundColor = "#f4f186";
+        if (text[textIndex] != word[wordIndex]) {
+          wordIndex = 0;
+        }
+      } else if (word[wordIndex] != text[textIndex]) {
+        if (wordIndex >= 0) {
+          wordIndex = tableauBords[wordIndex];
+        }
+        document.getElementById(textIndex.toString()).style.backgroundColor =
+          "#f4f186";
       }
     } else {
-      document.getElementById(textIndex.toString()).style.backgroundColor =
-        "#f4f186";
-      wordIndex = tableauBords[wordIndex];
-      if (wordIndex < 0) {
-        wordIndex += 1;
+      if (wordIndex != 0) {
+        wordIndex = tableauBords[wordIndex];
+      } else {
         textIndex += 1;
       }
     }
+    document.getElementById(textIndex.toString()).style.backgroundColor =
+      "#f4f186";
+    document.getElementById((textIndex - 1).toString()).style.borderColor =
+      "black";
 
     document.getElementById("time").innerHTML = Date.now() - start;
     increment ? await keyPressed() : null;
-    delay > 0 ? await sleep(delay) : null;
   }
 
   var end = Date.now();
