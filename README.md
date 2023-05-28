@@ -1,6 +1,6 @@
 # Knuth Morris Pratt Visualization
 
-Try it here: https://aristotelis-crtl.github.io/KMP/ 
+Try it here https://narchok.github.io/KMP/
 
 # Mini-project:
 
